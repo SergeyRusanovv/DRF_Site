@@ -3,44 +3,71 @@ from django.utils.translation import gettext_lazy as _
 
 
 class Subject(models.Model):
-    title = models.CharField(_('title'), max_length=255)
+    title = models.CharField(_('Тема'), max_length=255)
+
+    class Meta:
+        verbose_name = "Задания"  # описание модели в админке
+        verbose_name_plural = "Задания"
 
     def __str__(self):
         return self.title
 
+    # def save(self, *args, **kwargs):  - метод для автоматического добавления слага в модель
+    #     self.slug = slugify(self.title)
+    #     super().save(*args, **kwargs)
 
 class Student(models.Model):
-    name = models.CharField(_('name'), max_length=255)
+    name = models.CharField(_('Фамилия и имя'), max_length=255)
+
+    class Meta:
+        verbose_name = "Студенты"
+        verbose_name_plural = "Студенты"
 
     def __str__(self):
         return self.name
 
 
 class Attempt(models.Model):
-    student = models.ForeignKey(Student, on_delete=models.CASCADE, verbose_name=_('student'))
-    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, verbose_name=_('subject'))
-    date = models.DateField()
-    result = models.PositiveSmallIntegerField(_('result'))
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, verbose_name=_('Студент'))
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, verbose_name=_('Предмет'))
+    date = models.DateField(verbose_name="Дата")
+    result = models.PositiveSmallIntegerField(_('Результат'))
+
+    class Meta:
+        verbose_name = "Попытки"
+        verbose_name_plural = "Попытки"
 
 
 class Question(models.Model):
-    text = models.TextField(_('text'))
-    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, verbose_name=_('subject'))
+    text = models.TextField(_('Текст вопроса'))
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, verbose_name=_('Предмет'))
+
+    class Meta:
+        verbose_name = "Вопросы"
+        verbose_name_plural = "Вопросы"
 
     def __str__(self):
         return self.text[:30] + '...'
 
 
 class Answer(models.Model):
-    text = models.TextField(_('text'))
-    is_correct = models.BooleanField(_('is correct'))
-    question = models.ForeignKey(Question, on_delete=models.CASCADE, verbose_name=_('question'))
+    text = models.TextField(_('Ответ'))
+    is_correct = models.BooleanField(_('Результат'))
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, verbose_name=_('Вопрос'))
+
+    class Meta:
+        verbose_name = "Ответы"
+        verbose_name_plural = "Ответы"
 
     def __str__(self):
         return self.text[:30] + '...'
 
 
 class Testing(models.Model):
-    attempt = models.ForeignKey(Attempt, on_delete=models.CASCADE, verbose_name=_('attempt'))
-    question = models.ForeignKey(Question, on_delete=models.CASCADE, verbose_name=_('question'))
-    answer = models.ForeignKey(Answer, on_delete=models.CASCADE, verbose_name=_('answer'))
+    attempt = models.ForeignKey(Attempt, on_delete=models.CASCADE, verbose_name=_('Попытка'))
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, verbose_name=_('Вопрос'))
+    answer = models.ForeignKey(Answer, on_delete=models.CASCADE, verbose_name=_('Ответ'))
+
+    class Meta:
+        verbose_name = "Тестирование"
+        verbose_name_plural = "Тестирование"

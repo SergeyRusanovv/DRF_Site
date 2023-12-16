@@ -3,7 +3,7 @@ import django
 import os
 
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "drf_site.drf_site.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "drf_site.settings")
 django.setup()
 
 
