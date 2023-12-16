@@ -20,3 +20,7 @@ from django.urls import path
 urlpatterns = [
     path('admin/', admin.site.urls),
 ]
+
+
+admin.site.site_header = "Панель администратирования моделей для DRF сайта"  # заголовок в админке сайта
+admin.site.index_title = "Список приложений и  моделей"  # подзаголовок в админке сайта
