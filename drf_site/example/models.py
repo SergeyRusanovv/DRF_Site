@@ -16,6 +16,7 @@ class Subject(models.Model):
     #     self.slug = slugify(self.title)
     #     super().save(*args, **kwargs)
 
+
 class Student(models.Model):
     name = models.CharField(_('Фамилия и имя'), max_length=255)
 

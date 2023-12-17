@@ -16,12 +16,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from example.views import SubjectApiView
+from example.views import SubjectApiView, AnswerApiView, StudentApiView
 
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("api/v1/subjects/", SubjectApiView.as_view())
+    path("api/v1/subjects/", SubjectApiView.as_view()),
+    path("api/v1/answers/", AnswerApiView.as_view()),
+    path("api/v1/students/", StudentApiView.as_view()),
+    path("api/v1/students/<int:pk>/", StudentApiView.as_view())
 ]
 
 
