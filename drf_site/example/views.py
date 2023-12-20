@@ -5,7 +5,9 @@ from rest_framework.decorators import action
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.request import Request
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAdminUser
 
+from example.permissions import IsAdminOrReadOnly
 from example.models import (
     Subject, Attempt, Answer,
     Student, Testing, Question
@@ -78,6 +80,7 @@ class StudentApiView(APIView):
 class AttemptView(generics.ListCreateAPIView):
     queryset = Attempt.objects.all()
     serializer_class = AttemptSerializer
+    permission_classes = IsAuthenticatedOrReadOnly,  # добавлять только авторизованные или только читать
 
 
 class TestingListApiView(generics.ListCreateAPIView):
@@ -88,3 +91,4 @@ class TestingListApiView(generics.ListCreateAPIView):
 class QuestionDetailApiView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
+    permission_classes = IsAdminOrReadOnly,

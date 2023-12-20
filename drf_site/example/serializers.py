@@ -36,6 +36,9 @@ class TestingSerializer(serializers.ModelSerializer):
 
 
 class AttemptSerializer(serializers.ModelSerializer):
+    # user = serializers.HiddenField(default=serializers.CurrentUserDefault()) - если бы в модели был юзер то эта строка
+    # автоматически создает скрытое поле и вставляет туда текущего пользователя
+
     class Meta:
         model = Attempt
         fields = "__all__"
