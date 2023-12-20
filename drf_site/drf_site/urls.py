@@ -15,16 +15,34 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-from example.views import SubjectApiView, AnswerApiView, StudentApiView
+from django.urls import path, include
+from example.views import (
+    SubjectApiViewSet, AnswerApiView,
+    StudentApiView, TestingListApiView,
+    AttemptView, QuestionDetailApiView
+)
+from rest_framework import routers
+
+
+router = routers.SimpleRouter()
+router.register(r"subject", SubjectApiViewSet)
 
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("api/v1/subjects/", SubjectApiView.as_view()),
+    path("api/v1/", include(router.urls)),  # http://127.0.0.1:8000/api/v1/subjetct/
+
+    # path("api/v1/subjects/", SubjectApiViewSet.as_view({"get": "list"})),
+      # ключ - метод который вызывается, значение - метод вызывается из viewset
+    # path("api/v1/subjects/<int:pk>/", SubjectApiViewSet.as_view({"put": "update"})),
+
     path("api/v1/answers/", AnswerApiView.as_view()),
     path("api/v1/students/", StudentApiView.as_view()),
-    path("api/v1/students/<int:pk>/", StudentApiView.as_view())
+    path("api/v1/students/<int:pk>/", StudentApiView.as_view()),
+    path("api/v1/testings/", TestingListApiView.as_view()),
+    path("api/v1/testings/<int:pk>/", TestingListApiView.as_view()),
+    path("api/v1/attempts/", AttemptView.as_view()),
+    path("api/v1/questions/<int:pk>/", QuestionDetailApiView.as_view()),
 ]
 
 

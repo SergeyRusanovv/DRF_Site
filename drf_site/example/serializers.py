@@ -1,10 +1,8 @@
 import io
-
 from rest_framework import serializers
 from rest_framework.parsers import JSONParser
 from rest_framework.renderers import JSONRenderer
-
-from example.models import Subject, Answer, Student
+from example.models import Subject, Student, Testing, Attempt, Question
 
 
 class SubjectSerializer(serializers.ModelSerializer):
@@ -31,6 +29,24 @@ class StudentSerializer(serializers.Serializer):
         return instance
 
 
+class TestingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Testing
+        fields = "__all__"
+
+
+class AttemptSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Attempt
+        fields = "__all__"
+
+
+class QuestionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Question
+        fields = "__all__"
+
+
 ##########################################
 ### example work with Serializer class ###
 ##########################################
@@ -46,7 +62,7 @@ class Model:
 class ExSerializer(serializers.Serializer):
     text = serializers.CharField(max_length=512)
     is_correct = serializers.BooleanField()
-    # question = serializers.DjangoModelField()
+    question = serializers.IntegerField()
 
 
 def encode():

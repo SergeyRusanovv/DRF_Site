@@ -1,26 +1,22 @@
 from django.forms import model_to_dict
-from rest_framework import generics
-from example.models import Subject, Attempt, Answer, Student
-from example.serializers import SubjectSerializer, AnswerSerializer, StudentSerializer
+from rest_framework import generics, viewsets
+from example.models import (
+    Subject, Attempt, Answer,
+    Student, Testing, Question
+)
+from example.serializers import (
+    SubjectSerializer, AnswerSerializer,
+    StudentSerializer, TestingSerializer,
+    AttemptSerializer, QuestionSerializer
+)
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.request import Request
 
 
-# class SubjectApiView(generics.ListAPIView):
-#     queryset = Subject.objects.all()
-#     serializer_class = SubjectSerializer
-
-class SubjectApiView(APIView):
-    def get(self, request: Request) -> Response:
-        lst = Subject.objects.all().values()
-        return Response({"subjects": list(lst)})
-
-    def post(self, request: Request) -> Response:
-        subj_new = Subject.objects.create(
-            title=request.data["title"]
-        )
-        return Response({"subject": model_to_dict(subj_new)})
+class SubjectApiViewSet(viewsets.ModelViewSet):
+    queryset = Subject.objects.all()
+    serializer_class = SubjectSerializer
 
 
 class AnswerApiView(APIView):
@@ -65,3 +61,18 @@ class StudentApiView(APIView):
         serializer.is_valid()
         serializer.save()
         return Response({"update_student": serializer.data})
+
+
+class AttemptView(generics.ListCreateAPIView):
+    queryset = Attempt.objects.all()
+    serializer_class = AttemptSerializer
+
+
+class TestingListApiView(generics.ListCreateAPIView):
+    queryset = Testing.objects.all()
+    serializer_class = TestingSerializer
+
+
+class QuestionDetailApiView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Question.objects.all()
+    serializer_class = QuestionSerializer
