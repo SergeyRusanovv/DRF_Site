@@ -22,12 +22,21 @@ from example.views import (
     AttemptView, QuestionDetailApiView
 )
 from rest_framework import routers
+from example.routers import MyCustomRouter
 
 
-router = routers.SimpleRouter()
-router.register(r"subject", SubjectApiViewSet)
+router = routers.DefaultRouter()
+router.register(r"subject", SubjectApiViewSet, basename="sub")
 
+# [<URLPattern '^subject/$' [name='sub-list']>, <URLPattern '^subject/(?P<pk>[^/.]+)/$' [name='sub-detail']>]  - with basename and SimpleRouter
+# [<URLPattern '^subject/$' [name='subject-list']>, <URLPattern '^subject/(?P<pk>[^/.]+)/$' [name='subject-detail']>] - not with basename and SimpleRouter
 
+# [<URLPattern '^subject/$' [name='sub-list']>, <URLPattern '^subject\.(?P<format>[a-z0-9]+)/?$' [name='sub-list']>,
+# <URLPattern '^subject/(?P<pk>[^/.]+)/$' [name='sub-detail']>, <URLPattern '^subject/(?P<pk>[^/.]+)\.(?P<format>[a-z0-9]+)/?$'
+# [name='sub-detail']>, <URLPattern '^$' [name='api-root']>, <URLPattern '^\.(?P<format>[a-z0-9]+)/?$' [name='api-root']>] - with basename and DefaultRouter
+
+# basename обязателен если во ViewSet не установлен queryset
+print(router.urls)
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/v1/", include(router.urls)),  # http://127.0.0.1:8000/api/v1/subjetct/

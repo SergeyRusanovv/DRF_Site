@@ -1,5 +1,11 @@
+import random
 from django.forms import model_to_dict
 from rest_framework import generics, viewsets
+from rest_framework.decorators import action
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.request import Request
+
 from example.models import (
     Subject, Attempt, Answer,
     Student, Testing, Question
@@ -9,14 +15,20 @@ from example.serializers import (
     StudentSerializer, TestingSerializer,
     AttemptSerializer, QuestionSerializer
 )
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.request import Request
 
 
 class SubjectApiViewSet(viewsets.ModelViewSet):
     queryset = Subject.objects.all()
     serializer_class = SubjectSerializer
+
+    # def get_queryset(self):
+    #     return Subject.objects.all()[:2]  # возвращать первые 2 записи
+
+    @action(methods=["GET"], detail=False)
+    def get_random(self, request: Request) -> Subject:
+        random_int: int = random.choice([num for num in range(1, 4)])
+        random_subject = Subject.objects.get(pk=random_int)
+        return Response({"random_subject": SubjectSerializer(random_subject).data})
 
 
 class AnswerApiView(APIView):
