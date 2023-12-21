@@ -23,6 +23,10 @@ from example.views import (
 )
 from rest_framework import routers
 from example.routers import MyCustomRouter
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
 
 router = routers.DefaultRouter()
@@ -43,6 +47,8 @@ urlpatterns = [
     path("api/v1/drf_auth/", include("djoser.urls")),
     path(r'^drf_auth/', include('djoser.urls.authtoken')),
 
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path("api/v1/", include(router.urls)),  # http://127.0.0.1:8000/api/v1/subjetct/
 
     # path("api/v1/subjects/", SubjectApiViewSet.as_view({"get": "list"})),
