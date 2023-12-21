@@ -38,7 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'example.apps.ExampleConfig',
-    'rest_framework'
+    'rest_framework',
+    'rest_framework.authtoken',
+    'djoser'
 ]
 
 MIDDLEWARE = [
@@ -134,4 +136,8 @@ REST_FRAMEWORK = {  # default settings
     # 'DEFAULT_PERMISSION_CLASSES': [  - автоматически ко всему будет применен этот permission если нее определен permission_classes
     #         'rest_framework.permissions.IsAuthenticated',
     #     ]
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+            'rest_framework.authentication.BasicAuthentication',
+            'rest_framework.authentication.SessionAuthentication',
+        ]
 }

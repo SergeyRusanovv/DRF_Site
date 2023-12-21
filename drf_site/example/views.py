@@ -27,7 +27,7 @@ class SubjectApiViewSet(viewsets.ModelViewSet):
     #     return Subject.objects.all()[:2]  # возвращать первые 2 записи
 
     @action(methods=["GET"], detail=False)
-    def get_random(self, request: Request) -> Subject:
+    def get_random(self, request: Request) -> Response:
         random_int: int = random.choice([num for num in range(1, 4)])
         random_subject = Subject.objects.get(pk=random_int)
         return Response({"random_subject": SubjectSerializer(random_subject).data})

@@ -15,7 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from example.views import (
     SubjectApiViewSet, AnswerApiView,
     StudentApiView, TestingListApiView,
@@ -36,9 +36,13 @@ router.register(r"subject", SubjectApiViewSet, basename="sub")
 # [name='sub-detail']>, <URLPattern '^$' [name='api-root']>, <URLPattern '^\.(?P<format>[a-z0-9]+)/?$' [name='api-root']>] - with basename and DefaultRouter
 
 # basename обязателен если во ViewSet не установлен queryset
-print(router.urls)
+
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("api/v1/auth/", include("rest_framework.urls")),
+    path("api/v1/drf_auth/", include("djoser.urls")),
+    path(r'^drf_auth/', include('djoser.urls.authtoken')),
+
     path("api/v1/", include(router.urls)),  # http://127.0.0.1:8000/api/v1/subjetct/
 
     # path("api/v1/subjects/", SubjectApiViewSet.as_view({"get": "list"})),
