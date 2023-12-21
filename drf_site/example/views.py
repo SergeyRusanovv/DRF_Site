@@ -2,6 +2,7 @@ import random
 from django.forms import model_to_dict
 from rest_framework import generics, viewsets
 from rest_framework.decorators import action
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.request import Request
@@ -19,9 +20,16 @@ from example.serializers import (
 )
 
 
+class PaginationClass(PageNumberPagination):
+    page_size = 5
+    page_size_query_param = "page_size"
+    max_page_size = 1000
+
+
 class SubjectApiViewSet(viewsets.ModelViewSet):
     queryset = Subject.objects.all()
     serializer_class = SubjectSerializer
+    pagination_class = PaginationClass
 
     # def get_queryset(self):
     #     return Subject.objects.all()[:2]  # возвращать первые 2 записи
@@ -81,14 +89,17 @@ class AttemptView(generics.ListCreateAPIView):
     queryset = Attempt.objects.all()
     serializer_class = AttemptSerializer
     permission_classes = IsAuthenticatedOrReadOnly,  # добавлять только авторизованные или только читать
+    pagination_class = PaginationClass
 
 
 class TestingListApiView(generics.ListCreateAPIView):
     queryset = Testing.objects.all()
     serializer_class = TestingSerializer
+    pagination_class = PaginationClass
 
 
 class QuestionDetailApiView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
     permission_classes = IsAdminOrReadOnly,
+    pagination_class = PaginationClass
