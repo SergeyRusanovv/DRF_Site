@@ -7,6 +7,9 @@
         pip install -r requirements.txt
     </li>
     <li>
-        run db_utils.py
+        run example/db_utils.py
+    </li>
+    <li>
+        Documentation : api/v1/swagger/
     </li>
 </ol>

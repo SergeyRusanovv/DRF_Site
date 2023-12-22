@@ -3,6 +3,9 @@ from django.utils.translation import gettext_lazy as _
 
 
 class Subject(models.Model):
+    """
+    Модель представляющая вопросы
+    """
     title = models.CharField(_('Тема'), max_length=255)
 
     class Meta:
@@ -18,6 +21,9 @@ class Subject(models.Model):
 
 
 class Student(models.Model):
+    """
+    Модель студентов
+    """
     name = models.CharField(_('Фамилия и имя'), max_length=255)
 
     class Meta:
@@ -29,6 +35,9 @@ class Student(models.Model):
 
 
 class Attempt(models.Model):
+    """
+    Модель попыток
+    """
     student = models.ForeignKey(Student, on_delete=models.CASCADE, verbose_name=_('Студент'))
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE, verbose_name=_('Предмет'))
     date = models.DateField(verbose_name="Дата")
@@ -40,6 +49,9 @@ class Attempt(models.Model):
 
 
 class Question(models.Model):
+    """
+    Модель вопросов
+    """
     text = models.TextField(_('Текст вопроса'))
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE, verbose_name=_('Предмет'))
 
@@ -52,6 +64,9 @@ class Question(models.Model):
 
 
 class Answer(models.Model):
+    """
+    Модель ответов
+    """
     text = models.TextField(_('Ответ'))
     is_correct = models.BooleanField(_('Результат'))
     question = models.ForeignKey(Question, on_delete=models.CASCADE, verbose_name=_('Вопрос'))
@@ -65,6 +80,9 @@ class Answer(models.Model):
 
 
 class Testing(models.Model):
+    """
+    Модель тестирования
+    """
     attempt = models.ForeignKey(Attempt, on_delete=models.CASCADE, verbose_name=_('Попытка'))
     question = models.ForeignKey(Question, on_delete=models.CASCADE, verbose_name=_('Вопрос'))
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE, verbose_name=_('Ответ'))

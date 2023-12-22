@@ -27,10 +27,14 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
+from drf_spectacular.views import (
+    SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
+)
 
 
 router = routers.DefaultRouter()
 router.register(r"subject", SubjectApiViewSet, basename="sub")
+# basename обязателен если во ViewSet не установлен queryset
 
 # [<URLPattern '^subject/$' [name='sub-list']>, <URLPattern '^subject/(?P<pk>[^/.]+)/$' [name='sub-detail']>]  - with basename and SimpleRouter
 # [<URLPattern '^subject/$' [name='subject-list']>, <URLPattern '^subject/(?P<pk>[^/.]+)/$' [name='subject-detail']>] - not with basename and SimpleRouter
@@ -39,13 +43,17 @@ router.register(r"subject", SubjectApiViewSet, basename="sub")
 # <URLPattern '^subject/(?P<pk>[^/.]+)/$' [name='sub-detail']>, <URLPattern '^subject/(?P<pk>[^/.]+)\.(?P<format>[a-z0-9]+)/?$'
 # [name='sub-detail']>, <URLPattern '^$' [name='api-root']>, <URLPattern '^\.(?P<format>[a-z0-9]+)/?$' [name='api-root']>] - with basename and DefaultRouter
 
-# basename обязателен если во ViewSet не установлен queryset
 
 urlpatterns = [
+    path("admin/doc/", include("django.contrib.admindocs.urls")),
     path("admin/", admin.site.urls),
     path("api/v1/auth/", include("rest_framework.urls")),
     path("api/v1/drf_auth/", include("djoser.urls")),
     path(r'^drf_auth/', include('djoser.urls.authtoken')),
+
+    path("api/v1/schema/", SpectacularAPIView.as_view(), name="schema"),
+    path("api/v1/swagger/", SpectacularSwaggerView.as_view(url_name="schema"), name="swagger"),
+    path("api/v1/redoc/", SpectacularRedocView.as_view(url_name="schema"), name="redoc"),
 
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
